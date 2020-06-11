@@ -1,0 +1,33 @@
+.wrapper {
+  display: flex;
+  margin: 8px;
+  background-color: red;
+  p {
+    margin: 0;
+  }
+}
+
+$fontColor: rgb(76, 85, 102);
+
+body {
+  color: $fontColor;
+  font-family: sans-serif;
+}
+
+svg {
+  font-size: 14px;
+}
+
+.tip {
+  background-color: rgb(238, 238, 243);
+  height: 120px;
+  width: 200px;
+
+  text {
+    fill: $fontColor;
+  }
+
+  #hidden {
+    visibility: hidden;
+  }
+}

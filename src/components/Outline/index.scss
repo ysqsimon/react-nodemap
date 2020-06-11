@@ -1,0 +1,23 @@
+.outline {
+  height: 650px;
+  margin-right: 8px;
+  width: 200px;
+
+  rect {
+    fill: rgb(238, 238, 243);
+  }
+
+  .outpath {
+    transform: translate(14px, 15px);
+
+    path {
+      fill: none;
+      stroke-linecap: round;
+      stroke-width: 1.5;
+    }
+  }
+
+  #selectedOutnode > rect {
+    fill: rgb(204, 211, 253);
+  }
+}

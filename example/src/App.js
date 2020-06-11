@@ -1,10 +1,12 @@
 import React from 'react'
 
-import { ExampleComponent } from 'react-nodemap'
+import MindNode from 'react-nodemap'
+import sample from "./sample.json";
+
 import 'react-nodemap/dist/index.css'
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+  return <MindNode value={sample} />
 }
 
 export default App
