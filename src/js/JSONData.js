@@ -52,7 +52,6 @@ class JSONData {
   constructor(d) {
     // d为数组
     this.data = JSON.parse(JSON.stringify(d)); // 深拷贝
-    console.log('constructor', this.data);
     initColor(this.data);
     this._addId();
   }
@@ -111,9 +110,7 @@ class JSONData {
       for (let index = 0; index < id.length - 1; index++) {
         const number = id[index];
         dSelf = dSelf[number].children;
-        console.log(index, dSelf);
       }
-      console.log(dSelf);
       dSelf = dSelf[id[id.length - 1]];
       return dSelf;
     }
@@ -123,8 +120,6 @@ class JSONData {
   add(dParent, d) {
     // dParent添加子节点d
     const parent = this._getItself(dParent);
-    console.log(dParent);
-    console.log('parent', parent);
     if (parent.id === '0') {
       // 根节点
       if (!d.color) {
@@ -136,11 +131,14 @@ class JSONData {
     }
     inheritColor(d, d.color);
     d.id = `${parent.id}${parent.children.length}`;
-    console.log('add', d.id);
     parent.children.push(d);
-    console.log(dParent);
-    console.log(d);
     this._addId(`${d.id}`, d.children);
+  }
+
+  update(d, name) {
+    // change text
+    const self = this._getItself(d);
+    self.name = name;
   }
 
   _getParent(d, data = this.data) {

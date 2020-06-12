@@ -90,10 +90,10 @@ class MindMap extends Component {
         this.state.history.record(this.state.mmdata.data);
       }
       this.updateMindmap();
-      // this.state.toUpdate = false;
-      this.setState({
-        toUpdate: false,
-      });
+      this.state.toUpdate = false;
+      // this.setState({
+      //   toUpdate: false,
+      // });
       this.props.change(this.state.mmdata.getPuredata());
     }
   };
@@ -282,9 +282,7 @@ class MindMap extends Component {
   // 数据操作
   add = async (dParent, d) => {
     this.state.toRecord = true;
-    // this.setState({
-    //   toRecord: true
-    // })
+
     const newData = new JSONData(this.state.mmdata.data);
     newData.add(dParent, d);
     this.depthTraverse2(newData.data, this.getTextSize);
@@ -295,9 +293,7 @@ class MindMap extends Component {
 
   insert = async (dPosition, d, i = 0) => {
     this.state.toRecord = true;
-    // this.setState({
-    //   toRecord: true
-    // })
+
     const newData = new JSONData(this.state.mmdata.data);
     newData.insert(dPosition, d, i);
     this.depthTraverse2(newData.data, this.getTextSize);
@@ -312,13 +308,10 @@ class MindMap extends Component {
     }
 
     this.state.toRecord = true;
-    // this.setState({
-    //   toRecord: true
-    // })
 
     const newData = new JSONData(this.state.mmdata.data);
-
     newData.del(s);
+
     this.depthTraverse2(newData.data, this.getTextSize);
     this.setState({
       mmdata: newData,
@@ -327,11 +320,13 @@ class MindMap extends Component {
 
   updateName = (d, name) => {
     this.state.toRecord = true;
-    // this.setState({
-    //   toRecord: true
-    // })
-    d.data.name = name;
+    const newData = new JSONData(this.state.mmdata.data);
+    newData.update(d.data, name);
+
     this.depthTraverse2(this.state.mmdata.data, this.getTextSize);
+    this.setState({
+      mmdata: newData,
+    });
   };
 
   // 右键拖拽

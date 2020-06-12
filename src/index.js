@@ -26,6 +26,14 @@ class MindNode extends Component {
     this.forceUpdate();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.value !== this.props.value) {
+      this.setState({
+        mindnode_data: new JSONData(this.props.value),
+      });
+    }
+  }
+
   init = () => {
     const { listenKeyDown } = this;
 
@@ -96,16 +104,29 @@ class MindNode extends Component {
   };
 
   change = (value) => {
-    this.state.mindnode_data = value;
+    // this.setState({
+    //   mindnode_data: value,
+    // });
+    if (this.props.onChange) {
+      this.props.onChange(value);
+    }
   };
 
   render() {
     return (
       <div className="wrapper">
-        <Mindmap value={this.state.mindnode_data} change={this.change} />
+        <Mindmap
+          value={this.state.mindnode_data}
+          change={(value) => this.change(value)}
+        />
       </div>
     );
   }
 }
+
+MindNode.PropTypes = {
+  value: PropTypes.array,
+  onChange: PropTypes.func,
+};
 
 export default MindNode;
