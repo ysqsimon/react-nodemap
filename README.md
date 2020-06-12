@@ -1,12 +1,15 @@
-# react-nodemap
+# React-nodemap
 
 > Made with create-react-library
 
 [![NPM](https://img.shields.io/npm/v/react-nodemap.svg)](https://www.npmjs.com/package/react-nodemap) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-## Note
-This is a mindmap component that I roughly converted from Vue to React,
->the original Vue version: (https://github.com/hellowuxin/mindmap)
+**react-nodemap** is a mindmap component that I roughly converted from Vue to React(I prefer to call it **react-mindmap**, but it is massively used :/)
+>the original Vue version: [https://github.com/hellowuxin/mindmap]
+so you may expect some bugs in any stage
+
+## Online Demo
+play with the [Demo](https://ysqsimon.github.io/react-nodemap/)
 
 ## Install
 
@@ -18,8 +21,14 @@ or
 yarn add react-nodemap
 ```
 
-## Usage
+## API
+| Property      | Description   | Type  | Default |
+| ------------- |:-------------:| -----:| -------:|
+| value         | tree data(currently only accepts one obj in the array as the only root )  | array | `[{ name: 'Root', children: [] }]` |
+| onChange      | function to update your component state passed in `value` prop   |   func | |
 
+## Example
+you can play around with the component `<Nodemap />` even before adding any props, but be sure to add `onChange` func to update the var you passed into the value prop
 ### React Class Component
 ```jsx
 import React, { Component } from 'react'
@@ -61,7 +70,7 @@ or
 
 ```jsx
 import React, {useState, useEffect} from 'react'
-import MindNode from 'react-nodemap'
+import Nodemap from 'react-nodemap'
 
 import 'react-nodemap/dist/index.css'
 
@@ -80,11 +89,14 @@ const App = () => {
 
   return (
     <div>
-      <MindNode value={data} onChange={(value) => setData(value)}/>
+      <Nodemap value={data} onChange={(value) => setData(value)}/>
     </div>
   )
 }
 ```
+
+### Known bugs
+1. change siblings position sometimes will not work even crash
 
 ## License
 

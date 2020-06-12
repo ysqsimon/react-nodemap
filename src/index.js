@@ -18,7 +18,12 @@ class MindNode extends Component {
   }
 
   componentDidMount() {
-    this.state.mindnode_data = new JSONData(this.props.value);
+    if (this.props.value) {
+      this.state.mindnode_data = new JSONData(this.props.value);
+    } else {
+      this.state.mindnode_data = new JSONData([{ name: 'Root', children: [] }]);
+    }
+
     this.state.hotkey_g = d3.select('g#hotkey');
 
     this.drawHotkey();
