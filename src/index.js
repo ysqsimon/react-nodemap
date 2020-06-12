@@ -109,29 +109,23 @@ class MindNode extends Component {
   };
 
   change = (value) => {
-    // this.setState({
-    //   mindnode_data: value,
-    // });
-    if (this.props.onChange) {
-      this.props.onChange(value);
+    if (this.props.onDataChange) {
+      this.props.onDataChange(value);
     }
   };
 
   render() {
     return (
       <div className="wrapper">
-        <Mindmap
-          value={this.state.mindnode_data}
-          change={(value) => this.change(value)}
-        />
+        <Mindmap value={this.state.mindnode_data} change={this.change} />
       </div>
     );
   }
 }
 
-MindNode.PropTypes = {
+MindNode.propTypes = {
   value: PropTypes.array,
-  onChange: PropTypes.func,
+  onDataChange: PropTypes.func,
 };
 
 export default MindNode;
