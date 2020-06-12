@@ -10,7 +10,7 @@ const App = () => {
 
   return (
     <div>
-      <MindNode value={data} onChange={(value) =>  setData(value)}/>
+      <MindNode value={data} onDataChange={(value) => setData(value)}/>
     </div>
   )
 }

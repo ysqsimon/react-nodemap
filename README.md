@@ -25,10 +25,12 @@ yarn add react-nodemap
 | Property      | Description   | Type  | Default |
 | ------------- |:-------------:| -----:| -------:|
 | value         | tree data(currently only accepts one obj in the array as the only root )  | array | `[{ name: 'Root', children: [] }]` |
-| onChange      | function to update your component state passed in `value` prop   |   func | |
+| onDataChange   | function to update your data passed in `value` prop   |   func | |
+#### Note
+`onDataChange` will only fire when you add, delete, move branch, change sibling positions and change text of nodes(when a node input loses focus)
 
 ## Example
-you can play around with the component `<Nodemap />` even before adding any props, but be sure to add `onChange` func to update the var you passed into the value prop
+you can play around with the component `<Nodemap />` even before adding any props, but be sure to add `onDataChange` func to update the var you passed into the value prop
 ### React Class Component
 ```jsx
 import React, { Component } from 'react'
@@ -54,14 +56,14 @@ class Example extends Component {
     }
   }
 
-  onChange = (value) =>{
+  onDataChange = (value) =>{
     this.setState({
       data: value
     })
   }
 
   render() {
-    return <Nodemap value={this.state.data} onChange={this.onChange}/>
+    return <Nodemap value={this.state.data} onDataChange={this.onDataChange}/>
   }
 }
 ```
@@ -89,7 +91,7 @@ const App = () => {
 
   return (
     <div>
-      <Nodemap value={data} onChange={(value) => setData(value)}/>
+      <Nodemap value={data} onDataChange={(value) => setData(value)}/>
     </div>
   )
 }

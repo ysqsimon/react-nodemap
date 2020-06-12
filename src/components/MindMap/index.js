@@ -91,10 +91,6 @@ class MindMap extends Component {
       }
       this.updateMindmap();
       this.state.toUpdate = false;
-      // this.setState({
-      //   toUpdate: false,
-      // });
-      this.props.change(this.state.mmdata.getPuredata());
     }
   };
 
@@ -270,7 +266,7 @@ class MindMap extends Component {
 
           const multipleX = div.offsetWidth / rect.width;
           const multipleY = div.offsetHeight / rect.height;
-          const multiple = Math.min(multipleX, multipleY);
+          const multiple = Math.min(multipleX, multipleY) * 0.8;
 
           this.state.mindmap_svg
             .transition(this.state.easePolyInOut)
@@ -289,6 +285,7 @@ class MindMap extends Component {
     this.setState({
       mmdata: newData,
     });
+    this.props.change(newData.getPuredata());
   };
 
   insert = async (dPosition, d, i = 0) => {
@@ -300,6 +297,7 @@ class MindMap extends Component {
     this.setState({
       mmdata: newData,
     });
+    this.props.change(newData.getPuredata());
   };
 
   del = async (s) => {
@@ -316,6 +314,7 @@ class MindMap extends Component {
     this.setState({
       mmdata: newData,
     });
+    this.props.change(newData.getPuredata());
   };
 
   updateName = (d, name) => {
@@ -323,10 +322,11 @@ class MindMap extends Component {
     const newData = new JSONData(this.state.mmdata.data);
     newData.update(d.data, name);
 
-    this.depthTraverse2(this.state.mmdata.data, this.getTextSize);
+    this.depthTraverse2(newData.data, this.getTextSize);
     this.setState({
       mmdata: newData,
     });
+    this.props.change(newData.getPuredata());
   };
 
   // 右键拖拽
@@ -1174,7 +1174,7 @@ MindMap.defaultProps = {
   strokeWidth: 4,
   draggable: true,
   gps: true,
-  fitView: true,
+  fitView: false,
   download: false,
   keyboard: true,
   showNodeAdd: true,
