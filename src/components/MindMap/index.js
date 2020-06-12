@@ -513,11 +513,6 @@ class MindMap extends Component {
       contextMenuY: d3.event.pageY - svgPosition.y - window.scrollY,
       showContextMenu: true,
     });
-    // this.setState({
-    //   contextMenuX: d3.event.pageX - svgPosition.x - window.scrollX,
-    //   contextMenuY: d3.event.pageY - svgPosition.y - window.scrollY,
-    //   showContextMenu: true
-    // })
 
     this.clearSelection();
     setTimeout(() => {

@@ -103,17 +103,9 @@ class MindNode extends Component {
     return (
       <div className="wrapper">
         <Mindmap value={this.state.mindnode_data} change={this.change} />
-        <svg className="tip">
-          <g id="hotkey" />
-          <g id="hidden" />
-        </svg>
       </div>
     );
   }
 }
-
-// MindNode.propTypes = {
-//   value: PropTypes.array,
-// };
 
 export default MindNode;
