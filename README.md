@@ -4,12 +4,14 @@
 
 [![NPM](https://img.shields.io/npm/v/react-nodemap.svg)](https://www.npmjs.com/package/react-nodemap) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-**react-nodemap** is a mindmap component that I roughly converted from Vue to React(I prefer to call it **react-mindmap**, but it is massively used :/)
+**react-nodemap**(I prefer to call it **react-mindmap**, but it is massively used :/) is a mindmap React component that I converted from Vue by hand,so you may expect some bugs in any stage from packaging to excution. Feel free to post any issue you find, I will try my best to take care of it.
 >the original Vue version: [https://github.com/hellowuxin/mindmap]
-so you may expect some bugs in any stage
 
 ## Online Demo
 play with the [Demo](https://ysqsimon.github.io/react-nodemap/)
+
+## New Feature
+1.depthLimit: you can add a depth limit to the tree, which means you can restrict the addition or changing position of node to any position beyond the depthLimit specified.
 
 ## Install
 
@@ -25,7 +27,9 @@ yarn add react-nodemap
 | Property      | Description   | Type  | Default |
 | ------------- |:-------------:| -----:| -------:|
 | value         | tree data(currently only accepts one obj in the array as the only root )  | array | `[{ name: 'Root', children: [] }]` |
-| onDataChange   | function to update your data passed in `value` prop   |   func | |
+| depthLimit    | add limit to tree depth  | int | null |
+| onDataChange  | function to update your data passed in `value` prop   |  func | |
+
 #### Note
 `onDataChange` will only fire when you add, delete, move branch, change sibling positions and change text of nodes(when a node input loses focus)
 
@@ -63,7 +67,12 @@ class Example extends Component {
   }
 
   render() {
-    return <Nodemap value={this.state.data} onDataChange={this.onDataChange}/>
+    return 
+    <Nodemap 
+      value={this.state.data} 
+      onDataChange={this.onDataChange}
+      depthLimit={4}
+    />
   }
 }
 ```
@@ -91,14 +100,18 @@ const App = () => {
 
   return (
     <div>
-      <Nodemap value={data} onDataChange={(value) => setData(value)}/>
+      <Nodemap 
+        value={data} 
+        onDataChange={(value) => setData(value)}
+        depthLimit={4}
+      />
     </div>
   )
 }
 ```
 
 ### Known bugs
-1. change siblings position sometimes will not work even crash
+- [ ] change siblings position downward sometimes will not work or maybe crash
 
 ## License
 
