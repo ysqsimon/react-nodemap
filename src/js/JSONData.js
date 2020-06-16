@@ -54,15 +54,26 @@ class JSONData {
     this.data = JSON.parse(JSON.stringify(d)); // 深拷贝
     initColor(this.data);
     this._addId();
+    this._calcDepth();
   }
 
   _addId(id = '', d = this.data) {
     // 添加唯一标识
     for (let index = 0; index < d.length; index += 1) {
       const dChild = d[index];
-      dChild.id = `${id}${index}`;
+      dChild.nodeId = `${id}${index}`;
       if (dChild.children) {
         this._addId(`${id}${index}`, dChild.children);
+      }
+    }
+  }
+
+  _calcDepth(d = this.data) {
+    for (let index = 0; index < d.length; index += 1) {
+      const dChild = d[index];
+      dChild.depth = dChild.nodeId.length - 1;
+      if (dChild.children) {
+        this._calcDepth(dChild.children);
       }
     }
   }
@@ -98,13 +109,13 @@ class JSONData {
         }
       }
       children.splice(position, 1);
-      this._addId(parent.id, parent.children);
+      this._addId(parent.nodeId, parent.children);
     }
   }
 
   _getItself(d, data = this.data) {
     let dSelf = data;
-    const id = d.id.split('').map((s) => parseInt(s, 10));
+    const id = d.nodeId.split('').map((s) => parseInt(s, 10));
 
     if (id.length > 0) {
       for (let index = 0; index < id.length - 1; index++) {
@@ -117,10 +128,10 @@ class JSONData {
     return false;
   }
 
-  add(dParent, d) {
+  add(dParent, d, depthLimit) {
     // dParent添加子节点d
     const parent = this._getItself(dParent);
-    if (parent.id === '0') {
+    if (parent.nodeId === '0') {
       // 根节点
       if (!d.color) {
         d.color = colorScale(colorNumber);
@@ -130,9 +141,11 @@ class JSONData {
       d.color = parent.color; // 继承父节点的color
     }
     inheritColor(d, d.color);
-    d.id = `${parent.id}${parent.children.length}`;
+    d.nodeId = `${parent.nodeId}${parent.children.length}`;
+    this.data[0].depth = d.nodeId.length - 1;
+    console.log(this.data);
     parent.children.push(d);
-    this._addId(`${d.id}`, d.children);
+    this._addId(`${d.nodeId}`, d.children);
   }
 
   update(d, name) {
@@ -143,7 +156,7 @@ class JSONData {
 
   _getParent(d, data = this.data) {
     let dParent = data;
-    const id = d.id.split('').map((s) => parseInt(s, 10));
+    const id = d.nodeId.split('').map((s) => parseInt(s, 10));
     id.pop();
     if (id.length > 0) {
       for (let index = 0; index < id.length - 1; index++) {
@@ -171,7 +184,7 @@ class JSONData {
       }
       if (position + i < children.length) {
         // 更新id
-        if (parent.id === '0') {
+        if (parent.nodeId === '0') {
           // 根节点
           if (!d.color) {
             d.color = colorScale(colorNumber);
@@ -181,7 +194,7 @@ class JSONData {
           d.color = parent.color; // 继承父节点的color
         }
         children.splice(position + i, 0, d);
-        this._addId(parent.id, children);
+        this._addId(parent.nodeId, children);
       } else {
         this.add(parent, d);
       }

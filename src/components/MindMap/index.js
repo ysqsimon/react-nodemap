@@ -553,12 +553,24 @@ class MindMap extends Component {
   };
 
   mouseEnter = (d, i, n) => {
-    if (n[i].className.baseVal.includes('gButton')) {
-      d3.select(n[i]).style('opacity', 1);
+    if (this.props.depthLimit) {
+      if (d.depth < this.props.depthLimit) {
+        if (n[i].className.baseVal.includes('gButton')) {
+          d3.select(n[i]).style('opacity', 1);
+        } else {
+          d3.selectAll('g.gButton')
+            .filter((a, b, c) => c[b].parentNode === n[i].parentNode)
+            .style('opacity', 0.5);
+        }
+      }
     } else {
-      d3.selectAll('g.gButton')
-        .filter((a, b, c) => c[b].parentNode === n[i].parentNode)
-        .style('opacity', 0.5);
+      if (n[i].className.baseVal.includes('gButton')) {
+        d3.select(n[i]).style('opacity', 1);
+      } else {
+        d3.selectAll('g.gButton')
+          .filter((a, b, c) => c[b].parentNode === n[i].parentNode)
+          .style('opacity', 0.5);
+      }
     }
   };
 
@@ -572,7 +584,7 @@ class MindMap extends Component {
       .attr('transform', `translate(${targetY},${targetX})`);
     // 更新draggedNode与父节点的path
     d3.select(draggedNode).each((d) => {
-      d3.select(`path#path_${d.data.id}`)
+      d3.select(`path#path_${d.data.nodeId}`)
         .transition(tran)
         .attr(
           'd',
@@ -657,7 +669,9 @@ class MindMap extends Component {
           targetX > rect.x &&
           targetX < rect.x + rect.height
         ) {
-          gNode.setAttribute('id', 'newParentNode');
+          if (d.depth < this.props.depthLimit) {
+            gNode.setAttribute('id', 'newParentNode');
+          }
         } else if (gNode.getAttribute('id') === 'newParentNode') {
           gNode.removeAttribute('id');
         }
@@ -780,7 +794,7 @@ class MindMap extends Component {
   };
 
   pathId = (d) => {
-    return `path_${d.data.id}`;
+    return `path_${d.data.nodeId}`;
   };
 
   pathClass = (d) => {
@@ -878,7 +892,7 @@ class MindMap extends Component {
 
     const enterData = enter.data();
     if (enterData.length) {
-      if (enterData[0].data.id !== '0') {
+      if (enterData[0].data.nodeId !== '0') {
         gNode
           .append('path')
           .attr('id', pathId)
@@ -886,7 +900,7 @@ class MindMap extends Component {
           .lower()
           .attr('stroke', pathColor)
           .attr('d', path);
-      } else if (enterData[0].data.id === '0') {
+      } else if (enterData[0].data.nodeId === '0') {
         // 根节点
         foreign.attr('y', (d) => foreignY(d) + d.size[0] / 2);
       }
@@ -926,7 +940,7 @@ class MindMap extends Component {
         .data((d) => [d]) // must rebind the children using selection.data to give them the new data.
         .attr(
           'y',
-          d.data.id !== '0' ? foreignY(d) : foreignY(d) + d.size[0] / 2
+          d.data.nodeId !== '0' ? foreignY(d) : foreignY(d) + d.size[0] / 2
         );
 
       foreign.select('div').text(d.data.name);

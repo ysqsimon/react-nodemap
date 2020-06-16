@@ -117,14 +117,21 @@ class MindNode extends Component {
   render() {
     return (
       <div className="wrapper">
-        <Mindmap value={this.state.mindnode_data} change={this.change} />
+        <Mindmap
+          value={this.state.mindnode_data}
+          change={this.change}
+          depthLimit={this.props.depthLimit}
+        />
       </div>
     );
   }
 }
 
 MindNode.propTypes = {
+  // props
   value: PropTypes.array,
+  depthLimit: PropTypes.number,
+  // func
   onDataChange: PropTypes.func,
 };
 

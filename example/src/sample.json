@@ -40,13 +40,5 @@
       {
         "name":"进阶", "children": []
       }]
-  },
-  {
-    "name":"根节点2",
-    "children": [
-      {"name":"子节点1", "children": []},
-      {"name":"子节点2", "children": []},
-      {"name":"子节点3", "children": []}
-    ]
   }
 ]
