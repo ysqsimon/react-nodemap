@@ -669,7 +669,10 @@ class MindMap extends Component {
           targetX > rect.x &&
           targetX < rect.x + rect.height
         ) {
-          if (d.depth < this.props.depthLimit) {
+          if (
+            !this.props.depthLimit ||
+            (this.props.depthLimit && d.depth < this.props.depthLimit)
+          ) {
             gNode.setAttribute('id', 'newParentNode');
           }
         } else if (gNode.getAttribute('id') === 'newParentNode') {
