@@ -121,6 +121,7 @@ class MindNode extends Component {
           value={this.state.mindnode_data}
           change={this.change}
           depthLimit={this.props.depthLimit}
+          fields={this.props.fields}
         />
       </div>
     );
@@ -131,6 +132,7 @@ MindNode.propTypes = {
   // props
   value: PropTypes.array,
   depthLimit: PropTypes.number,
+  fields: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   // func
   onDataChange: PropTypes.func,
 };

@@ -285,7 +285,7 @@ class MindMap extends Component {
     this.setState({
       mmdata: newData,
     });
-    this.props.change(newData.getPuredata());
+    this.props.change(newData.getPuredata(undefined, this.props.fields));
   };
 
   insert = async (dPosition, d, i = 0) => {
@@ -297,7 +297,7 @@ class MindMap extends Component {
     this.setState({
       mmdata: newData,
     });
-    this.props.change(newData.getPuredata());
+    this.props.change(newData.getPuredata(undefined, this.props.fields));
   };
 
   del = async (s) => {
@@ -314,7 +314,7 @@ class MindMap extends Component {
     this.setState({
       mmdata: newData,
     });
-    this.props.change(newData.getPuredata());
+    this.props.change(newData.getPuredata(undefined, this.props.fields));
   };
 
   updateName = (d, name) => {
@@ -326,7 +326,7 @@ class MindMap extends Component {
     this.setState({
       mmdata: newData,
     });
-    this.props.change(newData.getPuredata());
+    this.props.change(newData.getPuredata(undefined, this.props.fields));
   };
 
   // 右键拖拽

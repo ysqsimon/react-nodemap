@@ -78,18 +78,24 @@ class JSONData {
     }
   }
 
-  getPuredata(d = JSON.parse(JSON.stringify(this.data))) {
+  getPuredata(d = JSON.parse(JSON.stringify(this.data)), fields) {
     for (let index = 0; index < d.length; index += 1) {
       const dd = d[index];
       const keys = Object.keys(dd);
       for (let i = 0; i < keys.length; i++) {
         const k = keys[i];
-        if (k !== 'name' && k !== 'children') {
+        if (
+          (typeof fields === 'string' &&
+            fields !== 'keepAll' &&
+            !['name', 'children'].includes(k)) ||
+          (Array.isArray(fields) &&
+            !['name', 'children', ...fields].includes(k))
+        ) {
           delete dd[k];
         }
       }
       if (dd.children) {
-        this.getPuredata(dd.children);
+        this.getPuredata(dd.children, fields);
       }
     }
     return d;
@@ -128,7 +134,7 @@ class JSONData {
     return false;
   }
 
-  add(dParent, d, depthLimit) {
+  add(dParent, d) {
     // dParent添加子节点d
     const parent = this._getItself(dParent);
     if (parent.nodeId === '0') {
@@ -143,7 +149,7 @@ class JSONData {
     inheritColor(d, d.color);
     d.nodeId = `${parent.nodeId}${parent.children.length}`;
     this.data[0].depth = d.nodeId.length - 1;
-    console.log(this.data);
+
     parent.children.push(d);
     this._addId(`${d.nodeId}`, d.children);
   }
