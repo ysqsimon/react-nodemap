@@ -29,17 +29,16 @@ yarn add react-nodemap
 | ------------- |:-------------:| -----:| -------:|
 | value         | tree data(currently only accepts one obj in the array as the only root )  | array | `[{ name: 'Root', children: [] }]` |
 | depthLimit    | add limit to tree depth  | int | null |
-| fields | specify the extra fields you pass into the data structure and also expecting them back when exported in onDataChange, or only 'name' and 'children' fields will be kept | `[] || 'keepAll'` | `['name','children']`|
+| fields | specify the extra fields you pass into the data structure and also expecting them back when exported in onDataChange, by default see below node structure | `[]` | `['id','createdAt']`|
 | onDataChange  | function to update your data passed in `value` prop   |  func | |
 
 #### ❗ Note
-Node Data Structure
+Node Data Structure Export
 ```jsx
 {
   name:'',
   children:[],
-
-  // will be omitted when getting data by default, can be controled in `fields` prop
+  // generated in the tree constructor, will be replaced if you have your own fields array
   size:[], 
   color:'',
   depth: 0,
@@ -47,7 +46,7 @@ Node Data Structure
 }
 ``` 
 - `onDataChange` will only fire when you add, delete, move branch, change sibling positions and change text of nodes(when a node input loses focus)
-- specify any other fields you pass into the data structure in `fields` as an array like `['id','createdAt']` to keep data clean, or use 'keepAll'(yes, the string, not ['keepAll']) if you just want all of them , but 👇
+- specify the fields in `fields` as an array like `['id','createdAt']` to keep data clean when exporting, but 👇
 ```diff
 ! WARNING: avoid passing in fields with already taken names, see above node structure
 ```
@@ -91,7 +90,7 @@ class Example extends Component {
       value={this.state.data} 
       onDataChange={this.onDataChange}
       depthLimit={4}
-      fields={['id','createdAt']}
+      fields={['id','createdAt']}// output fields will be ['name', 'children','id','createdAt'], others will be omitted
     />
   }
 }
@@ -124,7 +123,7 @@ const App = () => {
         value={data} 
         onDataChange={(value) => setData(value)}
         depthLimit={0}
-        fields="keepAll"
+        fields={['color','depth','id']}
       />
     </div>
   )
