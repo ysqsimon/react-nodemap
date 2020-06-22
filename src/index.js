@@ -115,10 +115,13 @@ class MindNode extends Component {
   };
 
   render() {
+    const treeData = this.props.value
+      ? new JSONData(this.props.value)
+      : new JSONData([{ name: 'Root', children: [] }]);
     return (
       <div className="wrapper">
         <Mindmap
-          value={this.state.mindnode_data}
+          value={treeData}
           change={this.change}
           depthLimit={this.props.depthLimit}
           fields={this.props.fields}
