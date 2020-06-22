@@ -85,11 +85,8 @@ class JSONData {
       for (let i = 0; i < keys.length; i++) {
         const k = keys[i];
         if (
-          (typeof fields === 'string' &&
-            fields !== 'keepAll' &&
-            !['name', 'children'].includes(k)) ||
-          (Array.isArray(fields) &&
-            !['name', 'children', ...fields].includes(k))
+          Array.isArray(fields) &&
+          !['name', 'children', ...fields].includes(k)
         ) {
           delete dd[k];
         }
