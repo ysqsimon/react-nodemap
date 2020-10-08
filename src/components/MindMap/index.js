@@ -46,14 +46,18 @@ class MindMap extends Component {
     this.redoRef = React.createRef();
   }
 
-  async componentDidMount() {
+  reposition = async () => {
+    await this.makeCenter();
+    await this.fitContent();
+  };
+
+  componentDidMount() {
     this.init();
     // this.mindmap_svg.on('mousedown', this.rightDragStart)
     // this.mindmap_svg.on('mousemove', this.rightDrag)
     // this.mindmap_svg.on('mouseup', this.rightDragEnd)
     this.updateData();
-    await this.makeCenter();
-    await this.fitContent();
+    this.reposition();
 
     this.state.mindmap_g.style('opacity', 1);
     this.forceUpdate();
@@ -1137,7 +1141,7 @@ class MindMap extends Component {
             </button>
           )}
         </div>
-        <div className="button top-right">
+        {/* <div className="button top-right">
           {this.props.showUndo && (
             <button
               className="icon"
@@ -1160,7 +1164,7 @@ class MindMap extends Component {
               <i className="redo" />
             </button>
           )}
-        </div>
+        </div> */}
       </div>
     );
   }
