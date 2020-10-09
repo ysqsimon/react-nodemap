@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 
 import MindNode from 'react-nodemap'
 import sample from "./sample.json";
 
 import 'react-nodemap/dist/index.css'
 
-const App = () => {
+function App(){
   const [data, setData] = useState(sample)
 
   console.log(data)

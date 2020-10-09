@@ -47,8 +47,12 @@ class MindMap extends Component {
   }
 
   reposition = async () => {
-    await this.makeCenter();
-    await this.fitContent();
+    try {
+      await this.makeCenter();
+      await this.fitContent();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   componentDidMount() {

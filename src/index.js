@@ -18,8 +18,10 @@ class MindNode extends Component {
   }
 
   componentDidMount() {
-    if (this.props.value) {
-      this.state.mindnode_data = new JSONData(this.props.value);
+    if (this.props.value || this.props.defaultValue) {
+      this.state.mindnode_data = new JSONData(
+        this.props.value || this.props.defaultValue
+      );
     } else {
       this.state.mindnode_data = new JSONData([{ name: 'Root', children: [] }]);
     }
@@ -33,9 +35,7 @@ class MindNode extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.value !== this.props.value) {
-      this.setState({
-        mindnode_data: new JSONData(this.props.value),
-      });
+      this.state.mindnode_data = new JSONData(this.props.value);
     }
   }
 

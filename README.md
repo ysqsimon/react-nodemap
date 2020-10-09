@@ -27,7 +27,8 @@ yarn add react-nodemap
 ## 🔌 API
 | Property      | Description   | Type  | Default |
 | ------------- |:-------------:| -----:| -------:|
-| value         | tree data(currently only accepts one obj in the array as the only root )  | array | `[{ name: 'Root', children: [] }]` |
+| defaultValue  | tree data(currently only accepts one obj in the array as the only root ) | `[]` | `[{ name: 'Root', children: [] }]` |
+| value         | same as `defaultValue`, but has full control  | `[]` | `[{ name: 'Root', children: [] }]` |
 | depthLimit    | add limit to tree depth  | int | null |
 | fields | specify the extra fields you pass into the data structure and also expecting them back when exported in onDataChange, by default see below node structure | `[]` | `['id','createdAt']`|
 | onDataChange  | function to update your data passed in `value` prop   |  func | |
@@ -87,7 +88,7 @@ class Example extends Component {
   render() {
     return 
     <Nodemap 
-      value={this.state.data} 
+      defaultValue={this.state.data} 
       onDataChange={this.onDataChange}
       depthLimit={4}
       fields={['id','createdAt']}// output fields will be ['name', 'children','id','createdAt'], others will be omitted

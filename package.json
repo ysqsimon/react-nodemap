@@ -1,8 +1,8 @@
 {
   "name": "react-nodemap",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Made with create-react-library",
-  "author": "ysqsimon",
+  "author": "ysqsimon<ysqsimon@hotmail.com>",
   "license": "MIT",
   "repository": "ysqsimon/react-nodemap",
   "main": "dist/index.js",
@@ -10,9 +10,12 @@
   "engines": {
     "node": ">=10"
   },
+  "keywords": ["react-mindmap","mindmap"],
   "scripts": {
-    "build": "parcel build src/index.js",
     "start": "parcel watch src/index.js",
+    "clean": "rm -rf dist",
+    "build": "parcel build src/index.js",
+    "prepublish": "yarn clean && yarn build",
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build"
   },
