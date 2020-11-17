@@ -11,8 +11,8 @@
 play with the [Demo](https://ysqsimon.github.io/react-nodemap/)
 
 ## 🤟🏻New Updates
-1. fields: add your own data structure to the tree value and remain untouched when exported(useful when you get/save the tree from/into database).
-2. depthLimit: you can add a depth limit to the tree, which means you can restrict the addition or changing position of node to any position beyond the depthLimit specified.
+1. added right click context menu and an option to
+2. export whole mindmap to img or pdf
 
 ## 💾 Install
 

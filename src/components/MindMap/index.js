@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 import { flextree } from 'd3-flextree';
 import * as d3 from '../../js/d3';
 import JSONData from '../../js/JSONData';
 import History from '../../js/History';
+import ContextMenu, { contextMenu } from '../ContextMenu';
 
 import './index.scss';
 
@@ -17,10 +20,10 @@ class MindMap extends Component {
       dTop: {}, // mmdata中纵坐标最高的数据
       mmdata: {}, // 思维导图数据
       root: {}, // 包含位置信息的mmdata
-      showContextMenu: false,
+      showNodeContextMenu: false,
       contextMenuX: 0,
       contextMenuY: 0,
-      contextMenuItems: [{ title: '删除节点', command: 0 }],
+      nodeContextMenuItems: [{ title: '删除节点', command: 0 }],
       mindmap_svg: {},
       mindmap_g: {},
       dummy: {},
@@ -33,6 +36,7 @@ class MindMap extends Component {
       zoom: d3.zoom(),
       history: new History(),
       selectedElement: null,
+      loading: false,
     };
     this.mindmapRef = React.createRef();
     this.svgRef = React.createRef();
@@ -514,7 +518,7 @@ class MindMap extends Component {
     this.setState({
       contextMenuX: d3.event.pageX - svgPosition.x - window.scrollX,
       contextMenuY: d3.event.pageY - svgPosition.y - window.scrollY,
-      showContextMenu: true,
+      showNodeContextMenu: true,
     });
 
     this.clearSelection();
@@ -538,14 +542,52 @@ class MindMap extends Component {
     }
   };
 
-  clickMenu = (item) => {
+  clickNodeMenu = (item) => {
     this.setState({
-      showContextMenu: false,
+      showNodeContextMenu: false,
     });
     this.removeSelectedNode();
     if (item.command === 0) {
       // 删除节点
       this.del(this.state.selectedElement.__data__.data);
+    }
+  };
+
+  clickMenu = async (item) => {
+    this.removeSelectedNode();
+    if (item.command === '01') {
+      // 导出图片
+      await this.reposition();
+      setTimeout(() => {
+        html2canvas(document.querySelector('#mindmap')).then((canvas) => {
+          const img = document.createElement('a');
+          const exportName = this.props.title
+            ? `${this.props.title}`
+            : 'export';
+          img.href = canvas
+            .toDataURL('image/jpeg')
+            .replace('image/jpeg', 'image/octet-stream');
+          img.download = `${exportName}.jpg`;
+          img.click();
+        });
+      }, 400);
+    } else if (item.command === '02') {
+      // 导出PDF
+      await this.reposition();
+      setTimeout(() => {
+        html2canvas(document.querySelector('#mindmap')).then((canvas) => {
+          const exportName = this.props.title
+            ? `${this.props.title}`
+            : 'export';
+          const pdf = new jsPDF({ orientation: 'landscape' });
+          const imgData = canvas.toDataURL('image/jpeg');
+          const imgProps = pdf.getImageProperties(imgData);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+          pdf.addImage(imgData, 0, 0, pdfWidth, pdfHeight);
+          pdf.save(`${exportName}.pdf`);
+        });
+      }, 400);
     }
   };
 
@@ -1072,19 +1114,57 @@ class MindMap extends Component {
 
   render() {
     const mmStyle = {
-      width: this.props.width ? `${this.props.width}px` : '100%',
-      height: this.props.height ? `${this.props.height}px` : '100vh',
+      width:
+        this.props.style && this.props.style.width
+          ? this.props.style.width
+          : '100%',
+      height:
+        this.props.style && this.props.style.height
+          ? this.props.style.height
+          : '100vh',
+      cursor: this.state.loading ? 'wait' : 'pointer',
     };
 
     const svgClass = `stroke-width-${this.props.strokeWidth}`;
-
     return (
-      <div ref={this.mindmapRef} id="mindmap" style={mmStyle}>
+      <div
+        ref={this.mindmapRef}
+        id="mindmap"
+        style={mmStyle}
+        onContextMenu={(e) => {
+          if (!this.state.showNodeContextMenu) {
+            this.clearSelection();
+            e.preventDefault();
+
+            contextMenu.show({
+              id: 'menu',
+              event: e,
+              props: {
+                width: 70,
+              },
+            });
+          }
+        }}
+      >
         <svg ref={this.svgRef} className={svgClass} tabIndex="0">
           <g ref={this.contentRef} id="content" />
         </svg>
         <div ref={this.dummyRef} id="dummy" />
-        {this.state.showContextMenu && (
+        <ContextMenu
+          id="menu"
+          onClick={this.clickMenu}
+          loading={() => {
+            this.setState({
+              loading: true,
+            });
+          }}
+          stopLoading={() => {
+            this.setState({
+              loading: false,
+            });
+          }}
+        />
+        {this.state.showNodeContextMenu && (
           <div
             ref={this.menuRef}
             id="menu"
@@ -1095,16 +1175,16 @@ class MindMap extends Component {
             }}
             onBlur={() => {
               this.setState({
-                showContextMenu: false,
+                showNodeContextMenu: false,
               });
             }}
           >
-            {this.state.contextMenuItems.map((item, index) => (
+            {this.state.nodeContextMenuItems.map((item, index) => (
               <div
                 className="menu-item"
                 key={index}
                 onClick={() => {
-                  this.clickMenu(item);
+                  this.clickNodeMenu(item);
                 }}
               >
                 {item.title}

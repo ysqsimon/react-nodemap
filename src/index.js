@@ -121,10 +121,12 @@ class MindNode extends Component {
     return (
       <div className="wrapper">
         <Mindmap
+          title={this.props.title}
           value={treeData}
           change={this.change}
           depthLimit={this.props.depthLimit}
           fields={this.props.fields}
+          style={this.props.style}
         />
       </div>
     );
@@ -133,6 +135,7 @@ class MindNode extends Component {
 
 MindNode.propTypes = {
   // props
+  title: PropTypes.string,
   value: PropTypes.array,
   depthLimit: PropTypes.number,
   fields: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
