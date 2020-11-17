@@ -1193,7 +1193,7 @@ class MindMap extends Component {
           </div>
         )}
 
-        <div className="button right-bottom">
+        {/* <div className="button right-bottom">
           {this.props.gps && (
             <button
               className="icon"
@@ -1224,7 +1224,7 @@ class MindMap extends Component {
               <i className="download" />
             </button>
           )}
-        </div>
+        </div> */}
         {/* <div className="button top-right">
           {this.props.showUndo && (
             <button
