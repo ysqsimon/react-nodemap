@@ -32,6 +32,7 @@ yarn add react-nodemap
 | depthLimit    | add limit to tree depth  | int | null |
 | fields | specify the extra fields you pass into the data structure and also expecting them back when exported in onDataChange, by default see below node structure | `[]` | `['id','createdAt']`|
 | onDataChange  | function to update your data passed in `value` prop   |  func | |
+| style | good to specify whole canvas width and height, especially for export to pdf, the best is a 297:210 ratio landscape | `{}` | none |
 
 #### ❗ Note
 Node Data Structure Export

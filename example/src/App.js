@@ -8,10 +8,9 @@ import 'react-nodemap/dist/index.css'
 function App(){
   const [data, setData] = useState(sample)
 
-  console.log(data)
   return (
     <div>
-      <MindNode value={data} onDataChange={(value) => setData(value)} fields="keepAll"/>
+      <MindNode value={data} onDataChange={(value) => setData(value)} fields="keepAll" style={{width: 1000, height: 700}}/>
     </div>
   )
 }

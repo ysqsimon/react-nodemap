@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import html2canvas from 'html2canvas';
+import domtoimage from 'dom-to-image';
 import { jsPDF } from 'jspdf';
 
 import { flextree } from 'd3-flextree';
@@ -278,7 +278,7 @@ class MindMap extends Component {
 
           const multipleX = div.offsetWidth / rect.width;
           const multipleY = div.offsetHeight / rect.height;
-          const multiple = Math.min(multipleX, multipleY) * 0.8;
+          const multiple = Math.min(multipleX, multipleY) * 0.95;
 
           this.state.mindmap_svg
             .transition(this.state.easePolyInOut)
@@ -557,36 +557,33 @@ class MindMap extends Component {
     this.removeSelectedNode();
     if (item.command === '01') {
       // 导出图片
+      const exportName = this.props.title ? `${this.props.title}` : 'export';
       await this.reposition();
       setTimeout(() => {
-        html2canvas(document.querySelector('#mindmap')).then((canvas) => {
-          const img = document.createElement('a');
-          const exportName = this.props.title
-            ? `${this.props.title}`
-            : 'export';
-          img.href = canvas
-            .toDataURL('image/jpeg')
-            .replace('image/jpeg', 'image/octet-stream');
-          img.download = `${exportName}.jpg`;
-          img.click();
-        });
+        domtoimage
+          .toJpeg(document.getElementById('mindmap'))
+          .then(function (dataUrl) {
+            const link = document.createElement('a');
+            link.download = `${exportName}.jpg`;
+            link.href = dataUrl;
+            link.click();
+          });
       }, 400);
     } else if (item.command === '02') {
       // 导出PDF
+      const exportName = this.props.title ? `${this.props.title}` : 'export';
       await this.reposition();
       setTimeout(() => {
-        html2canvas(document.querySelector('#mindmap')).then((canvas) => {
-          const exportName = this.props.title
-            ? `${this.props.title}`
-            : 'export';
-          const pdf = new jsPDF({ orientation: 'landscape' });
-          const imgData = canvas.toDataURL('image/jpeg');
-          const imgProps = pdf.getImageProperties(imgData);
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-          pdf.addImage(imgData, 0, 0, pdfWidth, pdfHeight);
-          pdf.save(`${exportName}.pdf`);
-        });
+        domtoimage
+          .toJpeg(document.getElementById('mindmap'))
+          .then(function (dataUrl) {
+            const pdf = new jsPDF({ orientation: 'landscape' });
+            const imgProps = pdf.getImageProperties(dataUrl);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            pdf.addImage(dataUrl, 0, 0, pdfWidth, pdfHeight);
+            pdf.save(`${exportName}.pdf`);
+          });
       }, 400);
     }
   };
@@ -603,17 +600,12 @@ class MindMap extends Component {
   };
 
   mouseEnter = (d, i, n) => {
+    let depthInRange = true;
     if (this.props.depthLimit) {
-      if (d.depth < this.props.depthLimit) {
-        if (n[i].className.baseVal.includes('gButton')) {
-          d3.select(n[i]).style('opacity', 1);
-        } else {
-          d3.selectAll('g.gButton')
-            .filter((a, b, c) => c[b].parentNode === n[i].parentNode)
-            .style('opacity', 0.5);
-        }
-      }
-    } else {
+      depthInRange = this.props.depthLimit && d.depth < this.props.depthLimit;
+    }
+    const peersInRange = d.data.children.length < 10;
+    if (depthInRange && peersInRange) {
       if (n[i].className.baseVal.includes('gButton')) {
         d3.select(n[i]).style('opacity', 1);
       } else {
