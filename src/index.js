@@ -126,6 +126,7 @@ class MindNode extends Component {
           change={this.change}
           depthLimit={this.props.depthLimit}
           fields={this.props.fields}
+          exportWatermark={this.props.exportWatermark}
           style={this.props.style}
         />
       </div>

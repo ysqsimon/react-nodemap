@@ -560,14 +560,39 @@ class MindMap extends Component {
       const exportName = this.props.title ? `${this.props.title}` : 'export';
       await this.reposition();
       setTimeout(() => {
-        domtoimage
-          .toJpeg(document.getElementById('mindmap'))
-          .then(function (dataUrl) {
-            const link = document.createElement('a');
-            link.download = `${exportName}.jpg`;
-            link.href = dataUrl;
-            link.click();
-          });
+        const node = document.getElementById('mindmap');
+        domtoimage.toPng(node).then((dataUrl) => {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          context.canvas.width = node.offsetWidth;
+          context.canvas.height = node.offsetHeight;
+          context.fillStyle = 'white';
+          context.fillRect(0, 0, canvas.width, canvas.height);
+
+          // load image from data url
+          const imageObj = new Image();
+          imageObj.onload = () => {
+            context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
+            const watermark = this.props.exportWatermark;
+            if (watermark) {
+              const img = new Image();
+              img.onload = function () {
+                context.translate(canvas.width / 2, canvas.height / 2);
+                context.rotate(watermark.rotate);
+                context.drawImage(img, -this.width / 2, -this.height / 2);
+                context.rotate(-watermark.rotate);
+                context.translate(-canvas.width / 2, -canvas.height / 2);
+
+                const link = document.createElement('a');
+                link.download = `${exportName}.jpg`;
+                link.href = canvas.toDataURL();
+                link.click();
+              };
+              img.src = watermark.imgSrc;
+            }
+          };
+          imageObj.src = dataUrl;
+        });
       }, 400);
     } else if (item.command === '02') {
       // 导出PDF
@@ -576,13 +601,29 @@ class MindMap extends Component {
       setTimeout(() => {
         domtoimage
           .toJpeg(document.getElementById('mindmap'))
-          .then(function (dataUrl) {
-            const pdf = new jsPDF({ orientation: 'landscape' });
+          .then((dataUrl) => {
+            const pdf = new jsPDF({ orientation: 'landscape', unit: 'pt' });
             const imgProps = pdf.getImageProperties(dataUrl);
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
             pdf.addImage(dataUrl, 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`${exportName}.pdf`);
+            if (this.props.exportWatermark) {
+              const watermark = this.props.exportWatermark;
+              const img = new Image();
+              img.onload = function () {
+                pdf.addImage({
+                  imageData: img,
+                  format: watermark.format,
+                  x: pdfWidth / 2 - this.width / 2,
+                  y: pdfHeight / 2 - this.height / 2,
+                  rotation: watermark.rotation,
+                });
+                pdf.save(`${exportName}.pdf`);
+              };
+              img.src = watermark.imgSrc;
+            } else {
+              pdf.save(`${exportName}.pdf`);
+            }
           });
       }, 400);
     }
