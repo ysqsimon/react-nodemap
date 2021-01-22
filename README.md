@@ -10,9 +10,10 @@
 ## 🉐🈚 Demo
 play with the [Demo](https://ysqsimon.github.io/react-nodemap/)
 
-## 🤟🏻New Updates
-1. added right click context menu and an option to
-2. export whole mindmap to img or pdf
+## 🤟🏻New Updates(latest first)
+1. can add your own watermark when export
+2. added right click context menu and an option to
+3. export whole mindmap to img or pdf
 
 ## 💾 Install
 
@@ -33,6 +34,7 @@ yarn add react-nodemap
 | fields | specify the extra fields you pass into the data structure and also expecting them back when exported in onDataChange, by default see below node structure | `[]` | `['id','createdAt']`|
 | onDataChange  | function to update your data passed in `value` prop   |  func | |
 | style | good to specify whole canvas width and height, especially for export to pdf, the best is a 297:210 ratio landscape | `{}` | none |
+| exportWatermark | show you own watermark img when export, you need at least a `imgSrc` a imgUrl or relative path and `format` e.g. 'JPEG', 'PNG', 'WEBP'(for jsPDF) | `{}` | `{}` |
 
 #### ❗ Note
 Node Data Structure Export
