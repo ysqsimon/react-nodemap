@@ -134,7 +134,7 @@ const App = () => {
 }
 ```
 
-### 😵 Known bugs（that currently no idea how to fix）
+### 😵 Known problems
 - [ ] change siblings position downward sometimes will not work or maybe crash
 
 ## License
