@@ -358,7 +358,7 @@ class MindMap extends Component {
     const seleData = sele.data()[0];
     const seleRawData = sele.data()[0].data;
     const pNode = sele.node().parentNode;
-    const newJSON = { name: '新建节点', children: [] };
+    const newJSON = { name: 'new data', children: [] };
     const keyName = d3.event.key;
 
     if (keyName === 'Tab') {
@@ -531,7 +531,7 @@ class MindMap extends Component {
     // 添加子节点
     if (n[i].style.opacity === '1') {
       const newJSON = {
-        name: '新建节点',
+        name: 'new data',
         children: [],
       };
 
