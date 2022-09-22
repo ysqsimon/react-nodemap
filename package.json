@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "start": "parcel watch src/index.js",
-    "clean": "rm -rf dist",
+    "clean": "del /s dist",
     "build": "parcel build src/index.js",
     "prepublish": "yarn clean && yarn build",
     "predeploy": "cd example && yarn install && yarn run build",
