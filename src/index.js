@@ -51,7 +51,7 @@ class MindNode extends Component {
     if (!sele.nodes()[0]) {
       return;
     }
-    const newJSON = { name: 'new data123', children: [] };
+    const newJSON = { name: 'new data', children: [] };
     const keyName = event.key;
     if (keyName === 'Tab') {
       // 添加子节点
