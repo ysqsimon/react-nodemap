@@ -531,7 +531,7 @@ class MindMap extends Component {
     // 添加子节点
     if (n[i].style.opacity === '1') {
       const newJSON = {
-        name: 'new data',
+        name: 'new data123',
         children: [],
       };
 
