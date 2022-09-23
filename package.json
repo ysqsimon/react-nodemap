@@ -16,14 +16,14 @@
   ],
   "scripts": {
     "start": "parcel watch src/index.js",
-    "clean": "rm -rf dist",
+    "clean": "del /s dist",
     "build": "parcel build src/index.js",
     "prepublish": "yarn clean && yarn build",
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build"
   },
   "peerDependencies": {
-    "react": "^16.0.0"
+    "react": "^18.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
@@ -53,8 +53,8 @@
     "parcel-bundler": "^1.12.4",
     "prettier": "^2.0.4",
     "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-scripts": "^3.4.1",
     "sass": "^1.26.8"
   },
