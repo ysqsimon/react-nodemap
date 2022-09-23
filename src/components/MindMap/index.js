@@ -358,7 +358,7 @@ class MindMap extends Component {
     const seleData = sele.data()[0];
     const seleRawData = sele.data()[0].data;
     const pNode = sele.node().parentNode;
-    const newJSON = { name: 'new data', children: [] };
+    const newJSON = { name: 'new data123', children: [] };
     const keyName = d3.event.key;
 
     if (keyName === 'Tab') {
