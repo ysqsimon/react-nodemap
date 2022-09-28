@@ -55,7 +55,7 @@ class MindMap extends Component {
       await this.makeCenter();
       await this.fitContent();
     } catch (e) {
-      console.log(e);
+      console.log("에러", e);
     }
   };
 
@@ -1179,7 +1179,8 @@ class MindMap extends Component {
               },
             });
           }
-        }}
+        
+        console.log("마인드맵!!!")}}
       >
         <h3>svg밖</h3>
         <svg ref={this.svgRef} className={svgClass} tabIndex="0">
