@@ -1184,15 +1184,15 @@ class MindMap extends Component {
       // }
       >
         {/* 여기 부터 마인드맵 네모 칸 시작! */}
-        <div ref={this.svgRef} className={svgClass} tabIndex="0">
-          <div>
+        <svg ref={this.svgRef} className={svgClass} tabIndex="0">
+   
         <text x="50%" y="10%" dominant-baseline="middle" text-anchor="middle">TEXT</text> 
         <img x="50%" y="10%"  src={trash_icon}/> 
         <img src={trash_icon}/> 
-        </div>
+     
           <g ref={this.contentRef} id="content" />    
       
-        </div>
+        </svg>
         {/* <div ref={this.dummyRef} id="dummy" /> */}
         {/* 요기까지 네모 칸 끝! */}
         {/* <ContextMenu
