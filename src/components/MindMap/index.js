@@ -1184,9 +1184,24 @@ class MindMap extends Component {
       >
         {/* 여기 부터 마인드맵 시작! */}
         <svg ref={this.svgRef} className={svgClass} tabIndex="0">
-          <g ref={this.contentRef} id="content" />
+          <path
+            d="M12 20L12 4"
+            stroke="red"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            />
+          <g ref={this.contentRef} id="content" />    
+          <path
+            d="M12 20L12 4"
+            stroke="black"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
         <div ref={this.dummyRef} id="dummy" />
+        <h3>끝?</h3>
         {/* <ContextMenu
           id="menu"
           onClick={this.clickMenu}
