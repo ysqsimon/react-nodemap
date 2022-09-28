@@ -9,23 +9,24 @@ export default class extends React.Component {
     super(props);
     this.state = {
       loading: [],
-      contextMenuItems: [
-        {
-          title: '导出',
-          command: '0',
-          children: [
-            { title: '图片', command: '01' },
-            { title: 'PDF', command: '02' },
-          ],
-        },
-      ],
+      // contextMenuItems: [
+      //   {
+      //     title: '导出',
+      //     command: '0',
+      //     children: [
+      //       { title: '图片', command: '01' },
+      //       { title: 'PDF', command: '02' },
+      //     ],
+      //   },
+      // ],
     };
   }
 
   render() {
     return (
       <Menu id={this.props.id} animation="pop" theme="light">
-        {this.state.contextMenuItems.map((item, index) => {
+        
+        {/* {this.state.contextMenuItems.map((item, index) => {
           if (item.children && item.children.length) {
             return (
               <Submenu label={item.title}>
@@ -58,7 +59,7 @@ export default class extends React.Component {
               {item.title}
             </Item>
           );
-        })}
+        })} */}
       </Menu>
     );
   }

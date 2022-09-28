@@ -120,10 +120,7 @@ class MindNode extends Component {
       ? new JSONData(this.props.value)
       : new JSONData([{ name: 'Root', children: [] }]);
     return (
-      <div>
-      <h3>div 위</h3>
       <div className="wrapper">
-        <h3>on the mindmap</h3>
         <Mindmap
           title={this.props.title}
           value={treeData}
@@ -133,7 +130,6 @@ class MindNode extends Component {
           exportWatermark={this.props.exportWatermark}
           style={this.props.style}
         />
-      </div>
       </div>
     );
   }

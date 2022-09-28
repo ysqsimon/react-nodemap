@@ -7,7 +7,7 @@ import { flextree } from 'd3-flextree';
 import * as d3 from '../../js/d3';
 import JSONData from '../../js/JSONData';
 import History from '../../js/History';
-import ContextMenu, { contextMenu } from '../ContextMenu';
+// import ContextMenu, { contextMenu } from '../ContextMenu';
 
 import './index.scss';
 
@@ -20,10 +20,10 @@ class MindMap extends Component {
       dTop: {}, // mmdata中纵坐标最高的数据
       mmdata: {}, // 마인드맵 데이터
       root: {}, // 包含位置信息的mmdata
-      showNodeContextMenu: false,
-      contextMenuX: 0,
-      contextMenuY: 0,
-      nodeContextMenuItems: [{ title: '删除节点', command: 0 }],
+      // showNodeContextMenu: false,
+      // contextMenuX: 0,
+      // contextMenuY: 0,
+      // nodeContextMenuItems: [{ title: '删除节点', command: 0 }],
       mindmap_svg: {},
       mindmap_g: {},
       dummy: {},
@@ -142,7 +142,7 @@ class MindMap extends Component {
     // 绑定节点事件
     this.makeDrag(this.props.draggable);
     this.makeNodeAdd(this.props.showNodeAdd);
-    this.makeContextMenu(this.props.contextMenu);
+    // this.makeContextMenu(this.props.contextMenu);
     this.makeNodeClick(this.props.nodeClick);
   };
 
@@ -177,11 +177,11 @@ class MindMap extends Component {
     }
   };
 
-  makeContextMenu = (val) => {
-    this.state.mindmap_g
-      .selectAll('foreignObject')
-      .on('contextmenu', val ? this.fObjectRightClick : null);
-  };
+  // makeContextMenu = (val) => {
+  //   this.state.mindmap_g
+  //     .selectAll('foreignObject')
+  //     .on('contextmenu', val ? this.fObjectRightClick : null);
+  // };
 
   makeDrag = (val) => {
     const { mindmap_g } = this.state;
@@ -513,13 +513,13 @@ class MindMap extends Component {
       // 选中
       this.selectNode(clickedNode);
     }
-    // 显示右键菜单
-    const svgPosition = this.state.mindmap_svg.node().getBoundingClientRect();
-    this.setState({
-      contextMenuX: d3.event.pageX - svgPosition.x - window.scrollX,
-      contextMenuY: d3.event.pageY - svgPosition.y - window.scrollY,
-      showNodeContextMenu: true,
-    });
+    // 显示右键菜单 pdf 추출관련
+    // const svgPosition = this.state.mindmap_svg.node().getBoundingClientRect();
+    // this.setState({
+    //   contextMenuX: d3.event.pageX - svgPosition.x - window.scrollX,
+    //   contextMenuY: d3.event.pageY - svgPosition.y - window.scrollY,
+    //   showNodeContextMenu: true,
+    // });
 
     this.clearSelection();
     setTimeout(() => {
@@ -543,9 +543,9 @@ class MindMap extends Component {
   };
 
   clickNodeMenu = (item) => {
-    this.setState({
-      showNodeContextMenu: false,
-    });
+    // this.setState({
+    //   showNodeContextMenu: false,
+    // });
     this.removeSelectedNode();
     if (item.command === 0) {
       // 删除节点
@@ -1166,30 +1166,28 @@ class MindMap extends Component {
         ref={this.mindmapRef}
         id="mindmap"
         style={mmStyle}
-        onContextMenu={(e) => {
-          if (!this.state.showNodeContextMenu) {
-            this.clearSelection();
-            e.preventDefault();
+      //   onContextMenu={(e) => {
+      //     if (!this.state.showNodeContextMenu) {
+      //       this.clearSelection();
+      //       e.preventDefault();
 
-            contextMenu.show({
-              id: 'menu',
-              event: e,
-              props: {
-                width: 70,
-              },
-            });
-          }
-        
-        console.log("마인드맵!!!")}}
+      //       contextMenu.show({
+      //         id: 'menu',
+      //         event: e,
+      //         props: {
+      //           width: 70,
+      //         },
+      //       });
+      //     }
+        // }
+      // }
       >
-        <h3>svg밖</h3>
+        {/* 여기 부터 마인드맵 시작! */}
         <svg ref={this.svgRef} className={svgClass} tabIndex="0">
-        <h3>svg안 g위</h3>
           <g ref={this.contentRef} id="content" />
-        <h3>svg안 g밑</h3>
         </svg>
         <div ref={this.dummyRef} id="dummy" />
-        <ContextMenu
+        {/* <ContextMenu
           id="menu"
           onClick={this.clickMenu}
           loading={() => {
@@ -1230,7 +1228,7 @@ class MindMap extends Component {
               </div>
             ))}
           </div>
-        )}
+        )} */}
 
         {/* <div className="button right-bottom">
           {this.props.gps && (
