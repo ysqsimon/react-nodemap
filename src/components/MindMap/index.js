@@ -7,7 +7,7 @@ import { flextree } from 'd3-flextree';
 import * as d3 from '../../js/d3';
 import JSONData from '../../js/JSONData';
 import History from '../../js/History';
-import {ReactComponent as trash_icon} from "../../img/trash.svg"
+import trash_icon from "../../img/trash.svg"
 // import ContextMenu, { contextMenu } from '../ContextMenu';
 
 import './index.scss';
@@ -1184,14 +1184,16 @@ class MindMap extends Component {
       // }
       >
         {/* 여기 부터 마인드맵 네모 칸 시작! */}
-        <svg ref={this.svgRef} className={svgClass} tabIndex="0">
-  <trash_icon width="10px" height="10px" />
-  <trash_icon  x="0px" y="0px" width="30px" height="30px" />
-        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">TEXT</text>  
+        <div ref={this.svgRef} className={svgClass} tabIndex="0">
+          <div>
+        <text x="50%" y="10%" dominant-baseline="middle" text-anchor="middle">TEXT</text> 
+        <img x="50%" y="10%"  src={trash_icon}/> 
+        <img src={trash_icon}/> 
+        </div>
           <g ref={this.contentRef} id="content" />    
       
-        </svg>
-        <div ref={this.dummyRef} id="dummy" >이 곳이 dummy</div>
+        </div>
+        {/* <div ref={this.dummyRef} id="dummy" /> */}
         {/* 요기까지 네모 칸 끝! */}
         {/* <ContextMenu
           id="menu"
