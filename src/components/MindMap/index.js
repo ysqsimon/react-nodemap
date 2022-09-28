@@ -18,7 +18,7 @@ class MindMap extends Component {
       toRecord: true, // 判断是否需要记录mmdata的数据快照
       toUpdate: true, // 判断是否需要更新mmdata
       dTop: {}, // mmdata中纵坐标最高的数据
-      mmdata: {}, // 思维导图数据
+      mmdata: {}, // 마인드맵 데이터
       root: {}, // 包含位置信息的mmdata
       showNodeContextMenu: false,
       contextMenuX: 0,
@@ -1151,10 +1151,12 @@ class MindMap extends Component {
         this.props.style && this.props.style.width
           ? this.props.style.width
           : '100%',
+
       height:
         this.props.style && this.props.style.height
           ? this.props.style.height
           : '100vh',
+
       cursor: this.state.loading ? 'wait' : 'pointer',
     };
 
@@ -1179,8 +1181,11 @@ class MindMap extends Component {
           }
         }}
       >
+        <Text>svg밖</Text>
         <svg ref={this.svgRef} className={svgClass} tabIndex="0">
+        <Text>svg안 g위</Text>
           <g ref={this.contentRef} id="content" />
+        <Text>svg안 g밑</Text>
         </svg>
         <div ref={this.dummyRef} id="dummy" />
         <ContextMenu
