@@ -120,6 +120,7 @@ class MindNode extends Component {
       : new JSONData([{ name: 'Root', children: [] }]);
     return (
       <div className="wrapper">
+        <h3>on the mindmap</h3>
         <Mindmap
           title={this.props.title}
           value={treeData}

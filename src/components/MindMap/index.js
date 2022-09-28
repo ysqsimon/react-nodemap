@@ -1181,11 +1181,11 @@ class MindMap extends Component {
           }
         }}
       >
-        <Text>svg밖</Text>
+        <h3>svg밖</h3>
         <svg ref={this.svgRef} className={svgClass} tabIndex="0">
-        <Text>svg안 g위</Text>
+        <h3>svg안 g위</h3>
           <g ref={this.contentRef} id="content" />
-        <Text>svg안 g밑</Text>
+        <h3>svg안 g밑</h3>
         </svg>
         <div ref={this.dummyRef} id="dummy" />
         <ContextMenu
