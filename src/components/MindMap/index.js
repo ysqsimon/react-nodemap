@@ -7,6 +7,7 @@ import { flextree } from 'd3-flextree';
 import * as d3 from '../../js/d3';
 import JSONData from '../../js/JSONData';
 import History from '../../js/History';
+import {ReactComponent as trash_icon} from "../../img/trash.svg"
 // import ContextMenu, { contextMenu } from '../ContextMenu';
 
 import './index.scss';
@@ -1155,7 +1156,7 @@ class MindMap extends Component {
       height:
         this.props.style && this.props.style.height
           ? this.props.style.height
-          : '100vh',
+          : '90vh',
 
       cursor: this.state.loading ? 'wait' : 'pointer',
     };
@@ -1182,26 +1183,16 @@ class MindMap extends Component {
         // }
       // }
       >
-        {/* 여기 부터 마인드맵 시작! */}
+        {/* 여기 부터 마인드맵 네모 칸 시작! */}
         <svg ref={this.svgRef} className={svgClass} tabIndex="0">
-          <path
-            d="M12 20L12 4"
-            stroke="red"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            />
+  <trash_icon width="10px" height="10px" />
+  <trash_icon  x="0px" y="0px" width="30px" height="30px" />
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">TEXT</text>  
           <g ref={this.contentRef} id="content" />    
-          <path
-            d="M12 20L12 4"
-            stroke="black"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
+      
         </svg>
-        <div ref={this.dummyRef} id="dummy" />
-        <h3>끝?</h3>
+        <div ref={this.dummyRef} id="dummy" >이 곳이 dummy</div>
+        {/* 요기까지 네모 칸 끝! */}
         {/* <ContextMenu
           id="menu"
           onClick={this.clickMenu}
