@@ -16,11 +16,11 @@ class MindMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toRecord: true, // 判断是否需要记录mmdata的数据快照
-      toUpdate: true, // 判断是否需要更新mmdata
-      dTop: {}, // mmdata中纵坐标最高的数据
+      toRecord: false, // mmdata의 데이터 스냅샷이 기록되어야 하는지 판단
+      toUpdate: true, // mmdata 업데이트가 필요한지 판단
+      dTop: {}, // mmdata에서 세로 좌표가 가장 높은 데이터
       mmdata: {}, // 마인드맵 데이터
-      root: {}, // 包含位置信息的mmdata
+      root: {}, // 위치 정보를 포함하는 mmdata
       // showNodeContextMenu: false,
       // contextMenuX: 0,
       // contextMenuY: 0,
@@ -108,12 +108,12 @@ class MindMap extends Component {
   };
 
   init = () => {
-    // 绑定元素
-    this.state.mindmap_svg = d3.select(this.svgRef.current);
+    // 绑定元素 바인딩 요소?
+    this.state.mindmap_svg = d3.select(this.svgRef.current); //마인드맵 전체 select
     this.state.mindmap_g = d3
-      .select(this.contentRef.current)
+      .select(this.contentRef.current) //마인드맵 데이터 select
       .style('opacity', 0);
-    this.state.dummy = d3.select(this.dummyRef.current);
+    this.state.dummy = d3.select(this.dummyRef.current); //더미 select
     // this.setState({
     //   mindmap_svg: d3.select(this.refs.svg),
     //   mindmap_g: d3.select(this.refs.content).style('opacity', 0),
@@ -121,12 +121,12 @@ class MindMap extends Component {
     // }, () => {
 
     // })
-    // 绑定事件
+    // 바인딩 이벤트
     this.makeKeyboard(this.props.keyboard);
     this.state.mindmap_svg.on('contextmenu', () => {
-      d3.event.preventDefault();
+      d3.event.preventDefault(); // 동작을 실행하지 않도록 함
     });
-    this.state.mindmapSvgZoom = this.state.zoom
+    this.state.mindmapSvgZoom = this.state.zoom //줌인줌아웃~
       .scaleExtent([0.1, 8])
       .on('zoom', () => {
         this.state.mindmap_g.attr('transform', d3.event.transform);
@@ -268,7 +268,7 @@ class MindMap extends Component {
   };
 
   fitContent = async () => {
-    // 适应窗口大小
+    // 창 크기에 맞게 조정
     await d3
       .transition()
       .end()
@@ -363,12 +363,12 @@ class MindMap extends Component {
     const keyName = d3.event.key;
 
     if (keyName === 'Tab') {
-      // 添加子节点
+      // 하위 노드 추가
       d3.event.preventDefault();
       this.add(seleRawData, newJSON);
       this.editNew(newJSON, seleData.depth + 1, pNode);
     } else if (keyName === 'Enter') {
-      // 添加弟弟节点
+      // 형제 노드 추가
       d3.event.preventDefault();
       if (pNode.isSameNode(this.contentRef.current)) {
         this.add(seleRawData, newJSON); // 根节点enter时，等效tab
@@ -378,7 +378,7 @@ class MindMap extends Component {
         this.editNew(newJSON, seleData.depth, pNode);
       }
     } else if (keyName === 'Backspace') {
-      // 删除节点
+      // 노드 삭제
       d3.event.preventDefault();
       this.del(seleRawData);
     }
@@ -854,7 +854,7 @@ class MindMap extends Component {
     });
   };
 
-  // 绘制
+  // 마인드맵 그리기
   updateMindmap = () => {
     this.tree();
     this.getDTop();
@@ -1072,7 +1072,7 @@ class MindMap extends Component {
   };
 
   tree = () => {
-    // 数据处理
+    // 데이터 처리
     const { mmdata } = this.state;
     const { ySpacing } = this.props;
 
@@ -1080,11 +1080,12 @@ class MindMap extends Component {
 
     const t = layout.hierarchy(mmdata.data[0]);
 
+    //트리 그림
     layout(t);
 
     t.each((a) => {
-      // x纵轴 y横轴
-      // 相对偏移
+      // x 세로축 y 가로축
+      // 상대편향
       a.dx = a.x - (a.parent ? a.parent.x : 0);
       a.dy = a.y - (a.parent ? a.parent.y : 0);
 
@@ -1156,7 +1157,7 @@ class MindMap extends Component {
       height:
         this.props.style && this.props.style.height
           ? this.props.style.height
-          : '90vh',
+          : '80vh',
 
       cursor: this.state.loading ? 'wait' : 'pointer',
     };
@@ -1183,13 +1184,13 @@ class MindMap extends Component {
         // }
       // }
       >
+        <img src={trash_icon}/> 
+
         {/* 여기 부터 마인드맵 네모 칸 시작! */}
         <svg ref={this.svgRef} className={svgClass} tabIndex="0">
-   
+          <svg>
         <text x="50%" y="10%" dominant-baseline="middle" text-anchor="middle">TEXT</text> 
-        <img x="50%" y="10%"  src={trash_icon}/> 
-        <img src={trash_icon}/> 
-     
+        </svg>
           <g ref={this.contentRef} id="content" />    
       
         </svg>
