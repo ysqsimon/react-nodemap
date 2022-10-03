@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import domtoimage from 'dom-to-image';
-import { jsPDF } from 'jspdf';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import domtoimage from "dom-to-image";
+import { jsPDF } from "jspdf";
 
-import { flextree } from 'd3-flextree';
-import * as d3 from '../../js/d3';
-import JSONData from '../../js/JSONData';
-import History from '../../js/History';
-import trash_icon from "../../img/trash.svg"
+import { flextree } from "d3-flextree";
+import * as d3 from "../../js/d3";
+import JSONData from "../../js/JSONData";
+import History from "../../js/History";
+import trash_icon from "../../img/trash.svg";
 // import ContextMenu, { contextMenu } from '../ContextMenu';
 
-import './index.scss';
+import "./index.scss";
 
 class MindMap extends Component {
   constructor(props) {
@@ -68,7 +68,7 @@ class MindMap extends Component {
     this.updateData();
     this.reposition();
 
-    this.state.mindmap_g.style('opacity', 1);
+    this.state.mindmap_g.style("opacity", 1);
     this.forceUpdate();
   }
 
@@ -112,7 +112,7 @@ class MindMap extends Component {
     this.state.mindmap_svg = d3.select(this.svgRef.current); //마인드맵 전체 select
     this.state.mindmap_g = d3
       .select(this.contentRef.current) //마인드맵 데이터 select
-      .style('opacity', 0);
+      .style("opacity", 0);
     this.state.dummy = d3.select(this.dummyRef.current); //더미 select
     // this.setState({
     //   mindmap_svg: d3.select(this.refs.svg),
@@ -123,13 +123,13 @@ class MindMap extends Component {
     // })
     // 바인딩 이벤트
     this.makeKeyboard(this.props.keyboard);
-    this.state.mindmap_svg.on('contextmenu', () => {
+    this.state.mindmap_svg.on("contextmenu", () => {
       d3.event.preventDefault(); // 동작을 실행하지 않도록 함
     });
     this.state.mindmapSvgZoom = this.state.zoom //줌인줌아웃~
       .scaleExtent([0.1, 8])
-      .on('zoom', () => {
-        this.state.mindmap_g.attr('transform', d3.event.transform);
+      .on("zoom", () => {
+        this.state.mindmap_g.attr("transform", d3.event.transform);
       });
     // this.setState({
     //   mindmapSvgZoom: this.state.zoom.scaleExtent([0.1, 8]).on('zoom', () => {
@@ -157,24 +157,24 @@ class MindMap extends Component {
 
   // 事件
   makeKeyboard = (val) => {
-    this.state.mindmap_svg.on('keydown', val ? this.svgKeyDown : null);
+    this.state.mindmap_svg.on("keydown", val ? this.svgKeyDown : null);
   };
 
   makeNodeAdd = (val) => {
-    const fObject = this.state.mindmap_g.selectAll('foreignObject');
-    const gBtn = this.state.mindmap_g.selectAll('.gButton');
+    const fObject = this.state.mindmap_g.selectAll("foreignObject");
+    const gBtn = this.state.mindmap_g.selectAll(".gButton");
 
     if (val) {
       const { mouseLeave, mouseEnter, gBtnClick } = this;
 
-      fObject.on('mouseenter', mouseEnter).on('mouseleave', mouseLeave);
+      fObject.on("mouseenter", mouseEnter).on("mouseleave", mouseLeave);
       gBtn
-        .on('mouseenter', mouseEnter)
-        .on('mouseleave', mouseLeave)
-        .on('click', gBtnClick);
+        .on("mouseenter", mouseEnter)
+        .on("mouseleave", mouseLeave)
+        .on("click", gBtnClick);
     } else {
-      fObject.on('mouseenter', null).on('mouseleave', null);
-      gBtn.on('mouseenter', null).on('mouseleave', null).on('click', null);
+      fObject.on("mouseenter", null).on("mouseleave", null);
+      gBtn.on("mouseenter", null).on("mouseleave", null).on("click", null);
     }
   };
 
@@ -189,34 +189,34 @@ class MindMap extends Component {
     if (val) {
       const { dragged, dragended } = this;
       mindmap_g
-        .selectAll('foreignObject')
+        .selectAll("foreignObject")
         .filter((d) => d.depth !== 0) // 非根节点才可以拖拽
         .call(
           d3
             .drag()
             .container((d, i, n) => n[i].parentNode.parentNode)
-            .on('drag', dragged)
-            .on('end', dragended)
+            .on("drag", dragged)
+            .on("end", dragended)
         );
     } else {
       mindmap_g
-        .selectAll('foreignObject')
-        .call(d3.drag().on('drag', null).on('end', null));
+        .selectAll("foreignObject")
+        .call(d3.drag().on("drag", null).on("end", null));
     }
   };
 
   makeNodeClick = (val) => {
     this.state.mindmap_g
-      .selectAll('foreignObject')
-      .on('click', val ? this.fObjectClick : null);
+      .selectAll("foreignObject")
+      .on("click", val ? this.fObjectClick : null);
   };
 
   makeZoom = (val) => {
     const { mindmap_svg, mindmapSvgZoom } = this.state;
     if (val) {
-      mindmap_svg.call(mindmapSvgZoom).on('dblclick.zoom', null);
+      mindmap_svg.call(mindmapSvgZoom).on("dblclick.zoom", null);
     } else {
-      mindmap_svg.on('.zoom', null);
+      mindmap_svg.on(".zoom", null);
     }
   };
 
@@ -351,7 +351,7 @@ class MindMap extends Component {
 
   // 键盘
   svgKeyDown() {
-    const sele = d3.select('#selectedNode');
+    const sele = d3.select("#selectedNode");
     if (!sele.node()) {
       return;
     }
@@ -359,15 +359,15 @@ class MindMap extends Component {
     const seleData = sele.data()[0];
     const seleRawData = sele.data()[0].data;
     const pNode = sele.node().parentNode;
-    const newJSON = { name: 'new node', children: [] };
+    const newJSON = { name: "new node", children: [] };
     const keyName = d3.event.key;
 
-    if (keyName === 'Tab') {
+    if (keyName === "Tab") {
       // 하위 노드 추가
       d3.event.preventDefault();
       this.add(seleRawData, newJSON);
       this.editNew(newJSON, seleData.depth + 1, pNode);
-    } else if (keyName === 'Enter') {
+    } else if (keyName === "Enter") {
       // 형제 노드 추가
       d3.event.preventDefault();
       if (pNode.isSameNode(this.contentRef.current)) {
@@ -377,7 +377,7 @@ class MindMap extends Component {
         this.insert(seleRawData, newJSON, 1);
         this.editNew(newJSON, seleData.depth, pNode);
       }
-    } else if (keyName === 'Backspace') {
+    } else if (keyName === "Backspace") {
       // 노드 삭제
       d3.event.preventDefault();
       this.del(seleRawData);
@@ -385,7 +385,7 @@ class MindMap extends Component {
   }
 
   divKeyDown = () => {
-    if (d3.event.key === 'Enter') {
+    if (d3.event.key === "Enter") {
       // d3.event.preventDefault()
       // document.execCommand('insertHTML', false, '<br>')
     }
@@ -394,12 +394,12 @@ class MindMap extends Component {
   // 节点操作
   updateNodeName = () => {
     // 文本编辑完成时
-    const editP = document.querySelector('#editing > foreignObject > div');
+    const editP = document.querySelector("#editing > foreignObject > div");
     window.getSelection().removeAllRanges(); // 清除选中
     const editText = editP.innerText;
-    d3.select('g#editing').each((d, i, n) => {
-      n[i].removeAttribute('id');
-      editP.setAttribute('contenteditable', false);
+    d3.select("g#editing").each((d, i, n) => {
+      n[i].removeAttribute("id");
+      editP.setAttribute("contenteditable", false);
       this.updateName(d, editText);
     });
   };
@@ -407,15 +407,15 @@ class MindMap extends Component {
   removeSelectedNode = () => {
     const sele = this.state.selectedElement;
     if (sele) {
-      sele.removeAttribute('id');
+      sele.removeAttribute("id");
     }
   };
 
   selectNode = (n) => {
     // 选中节点
-    if (n.getAttribute('id') !== 'selectedNode') {
+    if (n.getAttribute("id") !== "selectedNode") {
       this.removeSelectedNode();
-      d3.select(n).attr('id', 'selectedNode');
+      d3.select(n).attr("id", "selectedNode");
       this.state.selectedElement = n;
       // this.setState({
       //   selectedElement: n
@@ -426,14 +426,14 @@ class MindMap extends Component {
   editNode = (n) => {
     // 编辑节点
     this.removeSelectedNode();
-    n.setAttribute('id', 'editing');
+    n.setAttribute("id", "editing");
     d3.select(n)
-      .selectAll('foreignObject')
+      .selectAll("foreignObject")
       .filter((a, b, c) => c[b].parentNode === n)
-      .select('div')
-      .attr('contenteditable', true);
+      .select("div")
+      .attr("contenteditable", true);
 
-    const fdiv = document.querySelector('#editing > foreignObject > div');
+    const fdiv = document.querySelector("#editing > foreignObject > div");
     window.getSelection().selectAllChildren(fdiv);
   };
 
@@ -458,15 +458,15 @@ class MindMap extends Component {
   };
 
   fdivMouseDown = () => {
-    const flag = d3.event.target.getAttribute('contenteditable');
-    if (flag === 'true') {
+    const flag = d3.event.target.getAttribute("contenteditable");
+    if (flag === "true") {
       d3.event.stopPropagation(); // 防止触发drag、click
     }
   };
 
   fObjectClick = (d, i, n) => {
-    const edit = document.getElementById('editing');
-    const sele = document.getElementById('selectedNode');
+    const edit = document.getElementById("editing");
+    const sele = document.getElementById("selectedNode");
     const clickedNode = n[i].parentNode;
 
     if (!edit) {
@@ -475,9 +475,9 @@ class MindMap extends Component {
 
       const fdiv = d3
         .select(clickedNode)
-        .selectAll('foreignObject')
+        .selectAll("foreignObject")
         .filter((a, b, c) => c[b].parentNode === clickedNode)
-        .select('div')
+        .select("div")
         .node();
       fdiv.contentEditable = true;
 
@@ -489,7 +489,7 @@ class MindMap extends Component {
           } else {
             flag = true;
             this.removeSelectedNode();
-            clickedNode.setAttribute('id', 'editing');
+            clickedNode.setAttribute("id", "editing");
           }
           resolve(flag);
         }, 150);
@@ -503,8 +503,8 @@ class MindMap extends Component {
   };
 
   fObjectRightClick = (d, i, n) => {
-    const sele = document.getElementById('selectedNode');
-    const edit = document.getElementById('editing');
+    const sele = document.getElementById("selectedNode");
+    const edit = document.getElementById("editing");
     const clickedNode = n[i].parentNode;
     if (clickedNode.isSameNode(edit)) {
       // 正在编辑
@@ -530,9 +530,9 @@ class MindMap extends Component {
 
   gBtnClick = (a, i, n) => {
     // 添加子节点
-    if (n[i].style.opacity === '1') {
+    if (n[i].style.opacity === "1") {
       const newJSON = {
-        name: 'new node',
+        name: "new node",
         children: [],
       };
 
@@ -556,18 +556,18 @@ class MindMap extends Component {
 
   clickMenu = async (item) => {
     this.removeSelectedNode();
-    if (item.command === '01') {
+    if (item.command === "01") {
       // 导出图片
-      const exportName = this.props.title ? `${this.props.title}` : 'export';
+      const exportName = this.props.title ? `${this.props.title}` : "export";
       await this.reposition();
       setTimeout(() => {
-        const node = document.getElementById('mindmap');
+        const node = document.getElementById("mindmap");
         domtoimage.toPng(node).then((dataUrl) => {
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d');
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
           context.canvas.width = node.offsetWidth;
           context.canvas.height = node.offsetHeight;
-          context.fillStyle = 'white';
+          context.fillStyle = "white";
           context.fillRect(0, 0, canvas.width, canvas.height);
 
           // load image from data url
@@ -584,7 +584,7 @@ class MindMap extends Component {
                 context.rotate(-watermark.rotate);
                 context.translate(-canvas.width / 2, -canvas.height / 2);
 
-                const link = document.createElement('a');
+                const link = document.createElement("a");
                 link.download = `${exportName}.jpg`;
                 link.href = canvas.toDataURL();
                 link.click();
@@ -595,15 +595,15 @@ class MindMap extends Component {
           imageObj.src = dataUrl;
         });
       }, 400);
-    } else if (item.command === '02') {
+    } else if (item.command === "02") {
       // 导出PDF
-      const exportName = this.props.title ? `${this.props.title}` : 'export';
+      const exportName = this.props.title ? `${this.props.title}` : "export";
       await this.reposition();
       setTimeout(() => {
         domtoimage
-          .toJpeg(document.getElementById('mindmap'))
+          .toJpeg(document.getElementById("mindmap"))
           .then((dataUrl) => {
-            const pdf = new jsPDF({ orientation: 'landscape', unit: 'pt' });
+            const pdf = new jsPDF({ orientation: "landscape", unit: "pt" });
             const imgProps = pdf.getImageProperties(dataUrl);
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
@@ -632,12 +632,12 @@ class MindMap extends Component {
 
   // 悬浮事件
   mouseLeave = (d, i, n) => {
-    if (n[i].className.baseVal.includes('gButton')) {
-      d3.select(n[i]).style('opacity', 0);
+    if (n[i].className.baseVal.includes("gButton")) {
+      d3.select(n[i]).style("opacity", 0);
     } else {
-      d3.selectAll('g.gButton')
+      d3.selectAll("g.gButton")
         .filter((a, b, c) => c[b].parentNode === n[i].parentNode)
-        .style('opacity', 0);
+        .style("opacity", 0);
     }
   };
 
@@ -648,12 +648,12 @@ class MindMap extends Component {
     }
     const peersInRange = d.data.children.length < 10;
     if (depthInRange && peersInRange) {
-      if (n[i].className.baseVal.includes('gButton')) {
-        d3.select(n[i]).style('opacity', 1);
+      if (n[i].className.baseVal.includes("gButton")) {
+        d3.select(n[i]).style("opacity", 1);
       } else {
-        d3.selectAll('g.gButton')
+        d3.selectAll("g.gButton")
           .filter((a, b, c) => c[b].parentNode === n[i].parentNode)
-          .style('opacity', 0.5);
+          .style("opacity", 0.5);
       }
     }
   };
@@ -665,13 +665,13 @@ class MindMap extends Component {
     const tran = d3.transition().duration(dura).ease(d3.easePoly);
     d3.select(draggedNode)
       .transition(tran)
-      .attr('transform', `translate(${targetY},${targetX})`);
+      .attr("transform", `translate(${targetY},${targetX})`);
     // 更新draggedNode与父节点的path
     d3.select(draggedNode).each((d) => {
       d3.select(`path#path_${d.data.nodeId}`)
         .transition(tran)
         .attr(
-          'd',
+          "d",
           `${link({
             source: [
               -targetY + (d.parent ? d.parent.data.size[1] : 0) - xSpacing,
@@ -703,9 +703,9 @@ class MindMap extends Component {
     const draggedNode = n[i].parentNode;
     const fObject = n[i];
     // 选中
-    const sele = document.getElementById('selectedNode');
+    const sele = document.getElementById("selectedNode");
     if (sele && !sele.isSameNode(draggedNode)) {
-      sele.removeAttribute('id');
+      sele.removeAttribute("id");
     }
     // 拖拽
     // 相对a原本位置的偏移
@@ -717,12 +717,12 @@ class MindMap extends Component {
     let targetX = a.dx + px; // y轴坐标
     draggedNodeRenew(draggedNode, targetX, targetY);
     // foreignObject偏移
-    targetY += parseInt(fObject.getAttribute('x'), 10);
-    targetX += parseInt(fObject.getAttribute('y'), 10);
+    targetY += parseInt(fObject.getAttribute("x"), 10);
+    targetX += parseInt(fObject.getAttribute("y"), 10);
 
     // 计算others相对a.parent位置的坐标
     mindmap_g
-      .selectAll('g.node')
+      .selectAll("g.node")
       .filter(
         (d, i, n) =>
           !draggedNode.isSameNode(n[i]) &&
@@ -730,16 +730,16 @@ class MindMap extends Component {
       )
       .each((d, i, n) => {
         const gNode = n[i];
-        const gRect = gNode.getElementsByTagName('foreignObject')[0];
+        const gRect = gNode.getElementsByTagName("foreignObject")[0];
         const rect = {
           // 其他gRect相对a.parent的坐标，以及gRect的宽高
           y:
-            parseInt(gRect.getAttribute('x'), 10) + // foreignObject的x轴偏移
+            parseInt(gRect.getAttribute("x"), 10) + // foreignObject的x轴偏移
             d.y +
             (d.py ? d.py : 0) -
             (a.parent ? a.parent.y : 0),
           x:
-            parseInt(gRect.getAttribute('y'), 10) + // foreignObject的y轴偏移
+            parseInt(gRect.getAttribute("y"), 10) + // foreignObject的y轴偏移
             d.x +
             (d.px ? d.px : 0) -
             (a.parent ? a.parent.x : 0),
@@ -757,10 +757,10 @@ class MindMap extends Component {
             !this.props.depthLimit ||
             (this.props.depthLimit && d.depth < this.props.depthLimit)
           ) {
-            gNode.setAttribute('id', 'newParentNode');
+            gNode.setAttribute("id", "newParentNode");
           }
-        } else if (gNode.getAttribute('id') === 'newParentNode') {
-          gNode.removeAttribute('id');
+        } else if (gNode.getAttribute("id") === "newParentNode") {
+          gNode.removeAttribute("id");
         }
       });
   };
@@ -782,10 +782,10 @@ class MindMap extends Component {
       dragback(subject, draggedNode);
       return;
     }
-    const newParentNode = document.getElementById('newParentNode');
+    const newParentNode = document.getElementById("newParentNode");
     if (newParentNode) {
       // 建立新的父子关系
-      newParentNode.removeAttribute('id');
+      newParentNode.removeAttribute("id");
 
       d3.select(draggedNode).each((draggedD) => {
         d3.select(newParentNode).each((newParentD) => {
@@ -908,10 +908,10 @@ class MindMap extends Component {
     const dd = d.children;
     if (dd) {
       d3.select(n[i])
-        .selectAll(`g${dd[0] ? `.depth_${dd[0].depth}.node` : ''}`)
+        .selectAll(`g${dd[0] ? `.depth_${dd[0].depth}.node` : ""}`)
         .data(dd)
         .join(
-          (enter) => this.appendNode(enter),
+          vsode(enter),
           (update) => this.updateNode(update),
           (exit) => this.exitNode(exit)
         );
@@ -934,21 +934,21 @@ class MindMap extends Component {
       fdivMouseDown,
     } = this;
 
-    const gNode = enter.append('g');
-    gNode.attr('class', gClass).attr('transform', gTransform);
+    const gNode = enter.append("g");
+    gNode.attr("class", gClass).attr("transform", gTransform);
 
     const foreign = gNode
-      .append('foreignObject')
-      .attr('x', -5)
-      .attr('y', foreignY);
+      .append("foreignObject")
+      .attr("x", -5)
+      .attr("y", foreignY);
     const foreignDiv = foreign
-      .append('xhtml:div')
-      .attr('contenteditable', false)
+      .append("xhtml:div")
+      .attr("contenteditable", false)
       .text((d) => d.data.name);
     foreignDiv
-      .on('blur', updateNodeName)
-      .on('keydown', divKeyDown)
-      .on('mousedown', fdivMouseDown);
+      .on("blur", updateNodeName)
+      .on("keydown", divKeyDown)
+      .on("mousedown", fdivMouseDown);
     foreignDiv.each((d, i, n) => {
       // eslint-disable-next-line no-undef
       const observer = new ResizeObserver((l) => {
@@ -959,37 +959,37 @@ class MindMap extends Component {
         spacing = spacing || 0;
         foreign
           .filter((d, index) => i === index)
-          .attr('width', l[0].contentRect.width + spacing * 2) // div和foreign border
-          .attr('height', l[0].contentRect.height + spacing * 2);
+          .attr("width", l[0].contentRect.width + spacing * 2) // div和foreign border
+          .attr("height", l[0].contentRect.height + spacing * 2);
       });
       observer.observe(n[i]);
     });
 
     const gBtn = gNode
-      .append('g')
-      .attr('class', 'gButton')
-      .attr('transform', gBtnTransform);
+      .append("g")
+      .attr("class", "gButton")
+      .attr("transform", gBtnTransform);
     gBtn
-      .append('rect')
-      .attr('width', 24)
-      .attr('height', 24)
-      .attr('rx', 3)
-      .attr('ry', 3);
-    gBtn.append('path').attr('d', 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z');
+      .append("rect")
+      .attr("width", 24)
+      .attr("height", 24)
+      .attr("rx", 3)
+      .attr("ry", 3);
+    gBtn.append("path").attr("d", "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z");
 
     const enterData = enter.data();
     if (enterData.length) {
-      if (enterData[0].data.nodeId !== '0') {
+      if (enterData[0].data.nodeId !== "0") {
         gNode
-          .append('path')
-          .attr('id', pathId)
-          .attr('class', pathClass)
+          .append("path")
+          .attr("id", pathId)
+          .attr("class", pathClass)
           .lower()
-          .attr('stroke', pathColor)
-          .attr('d', path);
-      } else if (enterData[0].data.nodeId === '0') {
+          .attr("stroke", pathColor)
+          .attr("d", path);
+      } else if (enterData[0].data.nodeId === "0") {
         // 根节点
-        foreign.attr('y', (d) => foreignY(d) + d.size[0] / 2);
+        foreign.attr("y", (d) => foreignY(d) + d.size[0] / 2);
       }
 
       gNode.each(nest);
@@ -1013,46 +1013,46 @@ class MindMap extends Component {
       nest,
     } = this;
     const { easePolyInOut } = this.state;
-    update.interrupt().selectAll('*').interrupt();
+    update.interrupt().selectAll("*").interrupt();
     update
-      .attr('class', gClass)
+      .attr("class", gClass)
       .transition(easePolyInOut)
-      .attr('transform', gTransform);
+      .attr("transform", gTransform);
 
     update.each((d, i, n) => {
       const node = d3.select(n[i]);
       const foreign = node
-        .selectAll('foreignObject')
+        .selectAll("foreignObject")
         .filter((d, i, n) => n[i].parentNode === node.node())
         .data((d) => [d]) // must rebind the children using selection.data to give them the new data.
         .attr(
-          'y',
-          d.data.nodeId !== '0' ? foreignY(d) : foreignY(d) + d.size[0] / 2
+          "y",
+          d.data.nodeId !== "0" ? foreignY(d) : foreignY(d) + d.size[0] / 2
         );
 
-      foreign.select('div').text(d.data.name);
+      foreign.select("div").text(d.data.name);
       node
-        .select('path')
+        .select("path")
         .filter((d, i, n) => n[i].parentNode === node.node())
-        .attr('id', pathId(d))
-        .attr('class', pathClass(d))
-        .attr('stroke', pathColor(d))
+        .attr("id", pathId(d))
+        .attr("class", pathClass(d))
+        .attr("stroke", pathColor(d))
         .transition(easePolyInOut)
-        .attr('d', path(d));
+        .attr("d", path(d));
 
       node.each(nest);
 
       node
-        .selectAll('g.gButton')
+        .selectAll("g.gButton")
         .filter((d, i, n) => n[i].parentNode === node.node())
-        .attr('transform', gBtnTransform(d))
+        .attr("transform", gBtnTransform(d))
         .raise();
     });
     return update;
   };
 
   exitNode = (exit) => {
-    exit.filter((d, i, n) => n[i].classList[0] !== 'gButton').remove();
+    exit.filter((d, i, n) => n[i].classList[0] !== "gButton").remove();
   };
 
   draw = () => {
@@ -1062,7 +1062,7 @@ class MindMap extends Component {
     const d = [this.state.root];
 
     mindmap_g
-      .selectAll(`g${d[0] ? `.depth_${d[0].depth}.node` : ''}`)
+      .selectAll(`g${d[0] ? `.depth_${d[0].depth}.node` : ""}`)
       .data(d)
       .join(
         (enter) => appendNode(enter),
@@ -1113,10 +1113,10 @@ class MindMap extends Component {
     let textWidth = 0;
     let textHeight = 0;
     dummy
-      .selectAll('.dummyText')
+      .selectAll(".dummyText")
       .data([t.name])
       .enter()
-      .append('div')
+      .append("div")
       .text((d) => d)
       .each((d, i, n) => {
         textWidth = n[i].offsetWidth;
@@ -1152,14 +1152,14 @@ class MindMap extends Component {
       width:
         this.props.style && this.props.style.width
           ? this.props.style.width
-          : '100%',
+          : "100%",
 
       height:
         this.props.style && this.props.style.height
           ? this.props.style.height
-          : '80vh',
+          : "80vh",
 
-      cursor: this.state.loading ? 'wait' : 'pointer',
+      cursor: this.state.loading ? "wait" : "pointer",
     };
 
     const svgClass = `stroke-width-${this.props.strokeWidth}`;
@@ -1168,33 +1168,31 @@ class MindMap extends Component {
         ref={this.mindmapRef}
         id="mindmap"
         style={mmStyle}
-      //   onContextMenu={(e) => {
-      //     if (!this.state.showNodeContextMenu) {
-      //       this.clearSelection();
-      //       e.preventDefault();
+        //   onContextMenu={(e) => {
+        //     if (!this.state.showNodeContextMenu) {
+        //       this.clearSelection();
+        //       e.preventDefault();
 
-      //       contextMenu.show({
-      //         id: 'menu',
-      //         event: e,
-      //         props: {
-      //           width: 70,
-      //         },
-      //       });
-      //     }
+        //       contextMenu.show({
+        //         id: 'menu',
+        //         event: e,
+        //         props: {
+        //           width: 70,
+        //         },
+        //       });
+        //     }
         // }
-      // }
+        // }
       >
-        <img src={trash_icon}/> 
-
+        {/* <img src={trash_icon} /> */}
+        <h3>123
+            </h3>
         {/* 여기 부터 마인드맵 네모 칸 시작! */}
         <svg ref={this.svgRef} className={svgClass} tabIndex="0">
-          <svg>
-        <text x="50%" y="10%" dominant-baseline="middle" text-anchor="middle">TEXT</text> 
-        </svg>
-          <g ref={this.contentRef} id="content" />    
       
+          <g ref={this.contentRef} id="content" />
         </svg>
-        {/* <div ref={this.dummyRef} id="dummy" /> */}
+        <div ref={this.dummyRef} id="dummy" />
         {/* 요기까지 네모 칸 끝! */}
         {/* <ContextMenu
           id="menu"
